@@ -1,0 +1,36 @@
+{
+  "raw_request": "créer une app en vibe code pour stocker des mémoires, je vois les fiches, je scrolle, je clique pour détail",
+  "title": "Mémoire",
+  "description": "Journal personnel pour stocker et relire des mémoires avec navigation molette",
+  "type": "journal personnel",
+  "features": {
+    "microphone": true,
+    "scroll_wheel": true,
+    "accelerometer": false,
+    "camera": false,
+    "side_button": true,
+    "long_press": true
+  },
+  "storage": {
+    "use_plain_storage": true,
+    "secure_storage": false,
+    "persistent_data_keys": ["memos"],
+    "data_description": "Liste de mémoires avec titre, contenu et date"
+  },
+  "llm": {
+    "use_llm": false,
+    "wants_r1_response": false,
+    "wants_journal_entry": false,
+    "llm_prompts": []
+  },
+  "visual": {
+    "theme_color": "#2563eb",
+    "style": "sombre minimaliste",
+    "brand_text": "Mémoire"
+  },
+  "inspiration": null,
+  "approved": true,
+  "github_repo_url": null,
+  "github_pages_url": null,
+  "version": "1"
+}
