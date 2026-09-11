@@ -1,86 +1,121 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=240, height=282, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Installer Mémoire</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 240px; height: 282px; overflow: hidden; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    h1 { font-size: 14px; margin-bottom: 6px; color: #fff; text-align: center; }
-    p { font-size: 9px; color: #94a3b8; text-align: center; margin-bottom: 12px; }
-    #qrcode {
-      background: #fff;
-      padding: 8px;
-      border-radius: 8px;
-    }
-    .app-info {
-      margin-top: 12px;
-      font-size: 8px;
-      color: #2563eb;
-      font-weight: 600;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Mémoires — Installer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        p { color: #8b949e; margin-bottom: 20px; text-align: center; }
+        #qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        #qr-code {
+            display: block;
+        }
+        .url-display {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            word-break: break-all;
+            text-align: center;
+            margin-bottom: 16px;
+            max-width: 400px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #238636;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover { background: #2ea043; }
+        .btn:active { transform: scale(0.98); }
+        .instructions {
+            margin-top: 30px;
+            padding: 16px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            max-width: 400px;
+            text-align: left;
+        }
+        .instructions h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #58a6ff;
+        }
+        .instructions ol {
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Installer</h1>
-  <p>Scanne le QR code sur ton R1</p>
-  <div id="qrcode"></div>
-  <div class="app-info">Mémoire v1.0</div>
+    <h1>🧠 Mes Mémoires</h1>
+    <p>Scanne ce QR code avec ton Rabbit R1 pour installer l'app</p>
+    
+    <div id="qr-container">
+        <div id="qr-code"></div>
+    </div>
+    
+    <div class="url-display">https://cyberlife-coder.github.io/r1-memoir/</div>
+    
+    <a href="https://cyberlife-coder.github.io/r1-memoir/" class="btn">Ouvrir dans le navigateur</a>
+    
+    <div class="instructions">
+        <h2>📱 Comment installer sur ton R1</h2>
+        <ol>
+            <li>Ouvre l'app <strong>Creations</strong> sur ton Rabbit R1</li>
+            <li>Appuie sur <strong>"Add via QR code"</strong></li>
+            <li>Scanne le QR code ci-dessus</li>
+            <li>L'app s'installera automatiquement</li>
+        </ol>
+    </div>
 
-  <script>
-    const config = {
-      title: "Mémoire",
-      url: "https://wiscale.github.io/r1-memoir/",
-      description: "Journal personnel pour stocker et relire des mémoires avec navigation molette",
-      themeColor: "#2563eb"
-    };
-
-    const payload = JSON.stringify(config);
-    const qrUrl = `https://rabbit.tech/create-creation?payload=${encodeURIComponent(payload)}&v=${Date.now()}`;
-
-    if (typeof QRCode !== 'undefined') {
-      QRCode.toDataURL(qrUrl, {
-        width: 180,
-        margin: 1
-      }, function (error) {
-        if (error) console.error(error);
-        const qrContainer = document.getElementById('qrcode');
-        qrContainer.innerHTML = '';
-        const img = document.createElement('img');
-        img.src = qrUrl;
-        // Use simple URL-based QR generation instead
-        const qrImg = document.createElement('img');
-        qrImg.src = qrUrl.replace(/https?:\/\/[^/]+/, '').substring(0, 0);
-        // Actually, let's use the QRCode library properly
-        QRCode.toDataURL(qrUrl, {
-          width: 180,
-          margin: 2,
-          color: {
-            dark: "#0f172a",
-            light: "#ffffff"
-          }
-        }, function (err, url) {
-          if (err) console.error(err);
-          const qrContainer = document.getElementById('qrcode');
-          qrContainer.innerHTML = '';
-          const img = document.createElement('img');
-          img.src = url;
-          qrContainer.appendChild(img);
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // Generate QR code for the app URL
+        const appUrl = "https://cyberlife-coder.github.io/r1-memoir/";
+        const qrContainer = document.getElementById('qr-code');
+        
+        new QRCode(qrContainer, {
+            text: appUrl,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
         });
-      });
-    }
-  </script>
+        
+        // Log for debugging
+        console.log("QR Code generated for:", appUrl);
+    </script>
 </body>
 </html>
