@@ -1,525 +1,484 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=240, height=282, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mémoire</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 240px; height: 282px; overflow: hidden; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      font-size: 11px;
-      line-height: 1.4;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Mes Mémoires</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    width: 240px;
+    height: 282px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
-    /* Header */
-    .header {
-      background: #1e293b;
-      padding: 8px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #334155;
-    }
-    .header h1 {
-      font-size: 13px;
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.5px;
-    }
-    .header .add-btn {
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      width: 26px;
-      height: 26px;
-      font-size: 16px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
-    }
-    .header .add-btn:active {
-      transform: scale(0.92);
-    }
+  /* ---- Header ---- */
+  #app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    flex-shrink: 0;
+  }
+  #app-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .add-btn {
+    background: #238636;
+    border: none;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    /* List */
-    .memo-list {
-      height: calc(282px - 42px - 36px);
-      overflow-y: auto;
-      padding: 6px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .memo-list::-webkit-scrollbar { width: 3px; }
-    .memo-list::-webkit-scrollbar-track { background: #1e293b; }
-    .memo-list::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 3px; }
+  /* ---- Search ---- */
+  #search-row {
+    padding: 4px 10px;
+    background: #0d1117;
+    flex-shrink: 0;
+  }
+  #search-input {
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: #161b22;
+    color: #e6edf3;
+    font-size: 11px;
+    outline: none;
+  }
+  #search-input::placeholder { color: #484f58; }
 
-    .memo-item {
-      background: #1e293b;
-      border-radius: 8px;
-      padding: 8px 10px;
-      margin-bottom: 5px;
-      border-left: 3px solid #2563eb;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .memo-item:active { background: #334155; }
-    .memo-item .title {
-      font-weight: 600;
-      font-size: 11px;
-      color: #fff;
-      margin-bottom: 3px;
-    }
-    .memo-item .preview {
-      font-size: 9px;
-      color: #94a3b8;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .memo-item .date {
-      font-size: 8px;
-      color: #475569;
-      margin-top: 3px;
-    }
+  /* ---- List ---- */
+  #memo-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #30363d transparent;
+  }
+  .memo-card {
+    background: #161b22;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    position: relative;
+  }
+  .memo-card:active { background: #1c2128; }
+  .memo-card .title {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .memo-card .preview {
+    font-size: 10px;
+    color: #8b949e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .memo-card .date {
+    font-size: 9px;
+    color: #484f58;
+    margin-top: 2px;
+  }
+  .memo-card .del-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: none;
+    border: none;
+    color: #484f58;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 4px;
+  }
+  .memo-card .del-btn:active { color: #ef4444; }
 
-    /* Empty state */
-    .empty-state {
-      height: calc(282px - 42px - 36px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #475569;
-    }
-    .empty-state .icon { font-size: 28px; margin-bottom: 6px; }
-    .empty-state p { font-size: 10px; text-align: center; }
+  .empty-msg {
+    text-align: center;
+    color: #484f58;
+    font-size: 11px;
+    padding: 40px 10px;
+    line-height: 1.5;
+  }
 
-    /* Form overlay */
-    .form-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-    .form-overlay.hidden { display: none; }
-    .form-card {
-      background: #1e293b;
-      border-radius: 10px;
-      padding: 12px;
-      width: 210px;
-      border: 1px solid #334155;
-    }
-    .form-card h2 {
-      font-size: 12px;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-    .form-card input,
-    .form-card textarea {
-      width: 100%;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 6px;
-      color: #e2e8f0;
-      font-size: 10px;
-      padding: 6px 8px;
-      outline: none;
-      font-family: inherit;
-    }
-    .form-card input { margin-bottom: 6px; height: 24px; }
-    .form-card textarea { margin-bottom: 8px; height: 48px; resize: none; }
-    .form-card input:focus,
-    .form-card textarea:focus { border-color: #2563eb; }
-    .form-actions {
-      display: flex;
-      gap: 6px;
-    }
-    .form-actions button {
-      flex: 1;
-      padding: 6px 0;
-      border: none;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-cancel {
-      background: #334155;
-      color: #94a3b8;
-    }
-    .btn-save {
-      background: #2563eb;
-      color: #fff;
-    }
+  /* ---- Form overlay ---- */
+  #form-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 50;
+    align-items: flex-end;
+  }
+  #form-overlay.active { display: flex; }
+  #form-card {
+    background: #161b22;
+    border-radius: 14px 14px 0 0;
+    padding: 14px;
+    width: 100%;
+  }
+  #form-card h2 {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  #form-card input, #form-card textarea {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: #e6edf3;
+    font-size: 12px;
+    outline: none;
+    font-family: inherit;
+    margin-bottom: 6px;
+  }
+  #form-card textarea { height: 60px; resize: none; }
+  .form-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  .form-actions button {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-cancel { background: #30363d; color: #e6edf3; }
+  .btn-save { background: #238636; color: #fff; }
 
-    /* Detail modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-    .modal-overlay.hidden { display: none; }
-    .modal-card {
-      background: #1e293b;
-      border-radius: 10px;
-      padding: 12px;
-      width: 210px;
-      border: 1px solid #334155;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-    .modal-header h2 {
-      font-size: 12px;
-      color: #fff;
-      flex: 1;
-      margin-right: 8px;
-      word-break: break-word;
-    }
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .modal-date {
-      font-size: 8px;
-      color: #475569;
-      margin-bottom: 2px;
-    }
-    .btn-close {
-      background: none;
-      border: none;
-      color: #64748b;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 0;
-      line-height: 1;
-    }
-    .modal-body {
-      font-size: 10px;
-      color: #cbd5e1;
-      line-height: 1.5;
-      max-height: 120px;
-      overflow-y: auto;
-      margin-bottom: 8px;
-      word-break: break-word;
-    }
-    .modal-footer {
-      display: flex;
-      gap: 6px;
-    }
-    .modal-footer button {
-      flex: 1;
-      padding: 6px 0;
-      border: none;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-delete { background: #dc2626; color: #fff; }
-    .btn-close-modal { background: #334155; color: #94a3b8; }
+  /* ---- Detail modal ---- */
+  #detail-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 50;
+    align-items: flex-end;
+  }
+  #detail-overlay.active { display: flex; }
+  #detail-card {
+    background: #161b22;
+    border-radius: 14px 14px 0 0;
+    padding: 14px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  #detail-card .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  #detail-card .detail-title {
+    font-size: 15px;
+    font-weight: 800;
+  }
+  #detail-card .detail-close {
+    background: #30363d;
+    border: none;
+    color: #e6edf3;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  #detail-card .detail-date {
+    font-size: 9px;
+    color: #484f58;
+    margin-bottom: 8px;
+  }
+  #detail-card .detail-body {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #c9d1d9;
+    white-space: pre-wrap;
+  }
+  #detail-card .detail-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  #detail-card .detail-actions button {
+    flex: 1;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-detail-back { background: #30363d; color: #e6edf3; }
+  .btn-detail-delete { background: #3d1f28; color: #f85149; }
+  .btn-detail-edit { background: #238636; color: #fff; }
 
-    /* Footer */
-    .footer {
-      background: #1e293b;
-      padding: 6px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 8px;
-      color: #475569;
-      border-top: 1px solid #334155;
-    }
-    .footer .count { color: #2563eb; font-weight: 600; }
-
-    /* Voice indicator */
-    .voice-indicator {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(37, 99, 235, 0.95);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 11px;
-      text-align: center;
-      z-index: 200;
-      display: none;
-    }
-    .voice-indicator.active { display: block; }
-    .voice-indicator .pulse {
-      width: 8px;
-      height: 8px;
-      background: #fff;
-      border-radius: 50%;
-      display: inline-block;
-      animation: pulse 1s infinite;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
-  </style>
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+</style>
 </head>
 <body>
-  <div class="header">
-    <h1>🧠 Mémoire</h1>
-    <button class="add-btn" id="addBtn">+</button>
-  </div>
 
-  <div class="memo-list" id="memoList">
-    <div class="empty-state" id="emptyState">
-      <div class="icon">📝</div>
-      <p>Aucune mémoire.</p>
-      <p style="margin-top:4px;font-size:9px;">Appuie sur + pour créer</p>
+<!-- Header -->
+<div id="app-header">
+  <h1>🧠 Mémoires</h1>
+  <button class="add-btn" id="addBtn">+</button>
+</div>
+
+<!-- Search -->
+<div id="search-row">
+  <input type="text" id="search-input" placeholder="Rechercher...">
+</div>
+
+<!-- Memo List -->
+<div id="memo-list">
+  <div class="empty-msg" id="empty-msg">
+    <p style="font-size:1.5rem;margin-bottom:6px">📝</p>
+    <p>Aucune mémoire</p>
+    <p>Appuie sur <strong>+</strong> pour commencer</p>
+  </div>
+</div>
+
+<!-- Add/Edit Form -->
+<div id="form-overlay">
+  <div id="form-card">
+    <h2 id="form-title">Nouvelle mémoire</h2>
+    <input type="text" id="form-title-input" placeholder="Titre...">
+    <textarea id="form-content-input" placeholder="Ton souvenir..."></textarea>
+    <div class="form-actions">
+      <button class="btn-cancel" id="form-cancel">Annuler</button>
+      <button class="btn-save" id="form-save">💾</button>
     </div>
   </div>
+</div>
 
-  <div class="footer">
-    <span id="dateDisplay">—</span>
-    <span><span class="count" id="memoCount">0</span> mémoires</span>
-  </div>
-
-  <!-- Form -->
-  <div class="form-overlay hidden" id="formOverlay">
-    <div class="form-card">
-      <h2>Nouvelle mémoire</h2>
-      <input type="text" id="inputTitle" placeholder="Titre...">
-      <textarea id="inputContent" placeholder="Ta pensée..."></textarea>
-      <div class="form-actions">
-        <button class="btn-cancel" id="cancelBtn">Annuler</button>
-        <button class="btn-save" id="saveBtn">💾 Sauver</button>
-      </div>
+<!-- Detail View -->
+<div id="detail-overlay">
+  <div id="detail-card">
+    <div class="detail-header">
+      <span class="detail-title" id="detail-title"></span>
+      <button class="detail-close" id="detail-close">✕</button>
+    </div>
+    <div class="detail-date" id="detail-date"></div>
+    <div class="detail-body" id="detail-body"></div>
+    <div class="detail-actions">
+      <button class="btn-detail-back" id="detail-back">Retour</button>
+      <button class="btn-detail-edit" id="detail-edit">✎ Éditer</button>
+      <button class="btn-detail-delete" id="detail-delete">🗑</button>
     </div>
   </div>
+</div>
 
-  <!-- Detail Modal -->
-  <div class="modal-overlay hidden" id="modalOverlay">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="modalTitle"></h2>
-        <div class="modal-actions">
-          <span class="modal-date" id="modalDate"></span>
-          <button class="btn-close" id="modalClose">✕</button>
-        </div>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-      <div class="modal-footer">
-        <button class="btn-delete" id="deleteBtn">🗑 Suppr.</button>
-        <button class="btn-close-modal" id="closeModalBtn">Fermer</button>
-      </div>
-    </div>
-  </div>
+<script>
+(function() {
+  // === Storage ===
+  const STORAGE_KEY = 'r1-memo-app-v1';
 
-  <!-- Voice indicator -->
-  <div class="voice-indicator" id="voiceIndicator">
-    <span class="pulse"></span>Écoute en cours...
-  </div>
+  function loadMemories() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
 
-  <script>
-    // ===== STORAGE =====
-    const STORAGE_KEY = 'r1-memoir-data';
+  function saveMemories(memories) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(memories));
+  }
 
-    function loadMemos() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch { return []; }
+  function generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  function formatDate(ts) {
+    const d = new Date(ts);
+    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+  }
+
+  // === State ===
+  let memories = loadMemories();
+  let editingId = null; // null = new, 'xxx' = edit, 'delete' = view delete
+  let viewingId = null;
+
+  // === DOM refs ===
+  const $list = document.getElementById('memo-list');
+  const $empty = document.getElementById('empty-msg');
+  const $formOverlay = document.getElementById('form-overlay');
+  const $formTitle = document.getElementById('form-title');
+  const $formTitleInput = document.getElementById('form-title-input');
+  const $formContentInput = document.getElementById('form-content-input');
+  const $formCancel = document.getElementById('form-cancel');
+  const $formSave = document.getElementById('form-save');
+  const $detailOverlay = document.getElementById('detail-overlay');
+  const $detailTitle = document.getElementById('detail-title');
+  const $detailDate = document.getElementById('detail-date');
+  const $detailBody = document.getElementById('detail-body');
+  const $detailClose = document.getElementById('detail-close');
+  const $detailBack = document.getElementById('detail-back');
+  const $detailEdit = document.getElementById('detail-edit');
+  const $detailDelete = document.getElementById('detail-delete');
+  const $searchInput = document.getElementById('search-input');
+
+  // === Render ===
+  function render() {
+    const query = $searchInput.value.toLowerCase();
+    const filtered = query
+      ? memories.filter(m => m.title.toLowerCase().includes(query) || m.content.toLowerCase().includes(query))
+      : memories;
+
+    $list.innerHTML = '';
+
+    if (memories.length === 0 && !query) {
+      $list.appendChild($empty);
+      $empty.style.display = 'block';
+      return;
     }
 
-    function saveMemos(memos) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(memos));
+    $empty.style.display = 'none';
+
+    if (filtered.length === 0 && query) {
+      const p = document.createElement('div');
+      p.className = 'empty-msg';
+      p.textContent = 'Aucun résultat pour « ' + query + ' »';
+      $list.appendChild(p);
+      return;
     }
 
-    function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    }
+    filtered.forEach(function(memo) {
+      const card = document.createElement('div');
+      card.className = 'memo-card';
 
-    function formatDate(ts) {
-      const d = new Date(ts);
-      return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-    }
+      card.innerHTML = '<div class="title">' + esc(memo.title) + '</div>' +
+        '<div class="preview">' + esc(memo.content.slice(0, 60)) + '</div>' +
+        '<div class="date">' + formatDate(memo.createdAt) + '</div>' +
+        '<button class="del-btn">✕</button>';
 
-    // ===== STATE =====
-    let memos = loadMemos();
-    let viewingMemo = null;
+      card.querySelector('.title').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
+      card.querySelector('.preview').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
+      card.querySelector('.date').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
+      card.querySelector('.del-btn').addEventListener('click', function(e) { e.stopPropagation(); deleteMemory(memo.id); });
+      card.addEventListener('click', function() { openDetail(memo.id); });
 
-    // ===== DOM =====
-    const memoList = document.getElementById('memoList');
-    const emptyState = document.getElementById('emptyState');
-    const formOverlay = document.getElementById('formOverlay');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const inputTitle = document.getElementById('inputTitle');
-    const inputContent = document.getElementById('inputContent');
-    const memoCount = document.getElementById('memoCount');
-    const dateDisplay = document.getElementById('dateDisplay');
-    const voiceIndicator = document.getElementById('voiceIndicator');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDate = document.getElementById('modalDate');
-    const modalBody = document.getElementById('modalBody');
-
-    // Update date
-    dateDisplay.textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
-
-    // ===== RENDER =====
-    function render() {
-      memoCount.textContent = memos.length;
-
-      if (memos.length === 0) {
-        memoList.innerHTML = '';
-        memoList.appendChild(emptyState);
-        emptyState.style.display = 'flex';
-        return;
-      }
-
-      emptyState.style.display = 'none';
-      memoList.innerHTML = '';
-
-      memos.forEach(memo => {
-        const item = document.createElement('div');
-        item.className = 'memo-item';
-        item.innerHTML = `
-          <div class="title">${escapeHtml(memo.title)}</div>
-          <div class="preview">${escapeHtml(memo.content.substring(0, 60))}${memo.content.length > 60 ? '...' : ''}</div>
-          <div class="date">${formatDate(memo.createdAt)}</div>
-        `;
-        item.addEventListener('click', () => openDetail(memo));
-        memoList.appendChild(item);
-      });
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    // ===== FORM =====
-    function openForm(prefill) {
-      formOverlay.classList.remove('hidden');
-      if (prefill) {
-        inputContent.value = prefill;
-        inputTitle.focus();
-      } else {
-        inputTitle.value = '';
-        inputContent.value = '';
-        inputTitle.focus();
-      }
-    }
-
-    function closeForm() {
-      formOverlay.classList.add('hidden');
-    }
-
-    function saveMemo() {
-      const title = inputTitle.value.trim() || 'Sans titre';
-      const content = inputContent.value.trim();
-      if (!content) return;
-
-      memos.unshift({
-        id: generateId(),
-        title,
-        content,
-        createdAt: Date.now()
-      });
-      saveMemos(memos);
-      render();
-      closeForm();
-    }
-
-    document.getElementById('addBtn').addEventListener('click', () => openForm());
-    document.getElementById('cancelBtn').addEventListener('click', closeForm);
-    document.getElementById('saveBtn').addEventListener('click', saveMemo);
-
-    // ===== DETAIL =====
-    function openDetail(memo) {
-      viewingMemo = memo;
-      modalTitle.textContent = memo.title;
-      modalDate.textContent = formatDate(memo.createdAt);
-      modalBody.textContent = memo.content;
-      modalOverlay.classList.remove('hidden');
-    }
-
-    function closeDetail() {
-      modalOverlay.classList.add('hidden');
-      viewingMemo = null;
-    }
-
-    document.getElementById('modalClose').addEventListener('click', closeDetail);
-    document.getElementById('closeModalBtn').addEventListener('click', closeDetail);
-    document.getElementById('deleteBtn').addEventListener('click', () => {
-      if (viewingMemo) {
-        memos = memos.filter(m => m.id !== viewingMemo.id);
-        saveMemos(memos);
-        render();
-        closeDetail();
-      }
+      $list.appendChild(card);
     });
+  }
 
-    // ===== R1 EVENTS =====
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
 
-    // Side button -> add memo
-    if (window.addEventListener) {
-      window.addEventListener('sideClick', () => {
-        openForm();
+  // === Actions ===
+  function openAddForm() {
+    editingId = null;
+    $formTitle.textContent = 'Nouvelle mémoire';
+    $formTitleInput.value = '';
+    $formContentInput.value = '';
+    $formOverlay.classList.add('active');
+    $formTitleInput.focus();
+  }
+
+  function closeForm() {
+    $formOverlay.classList.remove('active');
+    editingId = null;
+  }
+
+  function saveForm() {
+    var title = $formTitleInput.value.trim();
+    var content = $formContentInput.value.trim();
+    if (!title && !content) return;
+
+    if (editingId) {
+      // Edit existing
+      memories = memories.map(function(m) {
+        if (m.id === editingId) return { ...m, title: title || 'Sans titre', content: content };
+        return m;
       });
+    } else {
+      memories.unshift({ id: generateId(), title: title || 'Sans titre', content: content, createdAt: Date.now() });
     }
 
-    // Scroll wheel -> scroll list (native)
-    // Additional scrollUp/scrollDown events for R1
-    if (window.addEventListener) {
-      window.addEventListener('scrollUp', (e) => {
-        e.preventDefault();
-        memoList.scrollTop -= 40;
-      });
-      window.addEventListener('scrollDown', (e) => {
-        e.preventDefault();
-        memoList.scrollTop += 40;
-      });
-    }
+    saveMemories(memories);
+    closeForm();
+    render();
+  }
 
-    // Long press -> voice dictation
-    if (window.addEventListener) {
-      window.addEventListener('longPressStart', (e) => {
-        voiceIndicator.classList.add('active');
-      });
-      window.addEventListener('longPressEnd', (e) => {
-        voiceIndicator.classList.remove('active');
+  function openDetail(id) {
+    var memo = memories.find(function(m) { return m.id === id; });
+    if (!memo) return;
+    viewingId = id;
+    $detailTitle.textContent = memo.title;
+    $detailDate.textContent = new Date(memo.createdAt).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    $detailBody.textContent = memo.content;
+    $detailOverlay.classList.add('active');
+  }
 
-        // Start dictation if available
-        if (window.grammarSpeech && window.grammarSpeech.startSpeechRecognition) {
-          window.grammarSpeech.startSpeechRecognition({
-            language: 'fr-FR',
-            onResult: (transcript) => {
-              if (transcript && transcript.trim()) {
-                openForm(transcript.trim());
-              }
-            }
-          });
-        }
-      });
-    }
-  </script>
+  function closeDetail() {
+    $detailOverlay.classList.remove('active');
+    viewingId = null;
+  }
+
+  function deleteMemory(id) {
+    memories = memories.filter(function(m) { return m.id !== id; });
+    saveMemories(memories);
+    if (viewingId === id) closeDetail();
+    render();
+  }
+
+  function startEditFromDetail(id) {
+    var memo = memories.find(function(m) { return m.id === id; });
+    if (!memo) return;
+    closeDetail();
+    editingId = id;
+    $formTitle.textContent = 'Modifier';
+    $formTitleInput.value = memo.title;
+    $formContentInput.value = memo.content;
+    $formOverlay.classList.add('active');
+  }
+
+  // === Events ===
+  document.getElementById('addBtn').addEventListener('click', openAddForm);
+  $formCancel.addEventListener('click', closeForm);
+  $formSave.addEventListener('click', saveForm);
+  $detailClose.addEventListener('click', closeDetail);
+  $detailBack.addEventListener('click', closeDetail);
+  $detailEdit.addEventListener('click', function() { startEditFromDetail(viewingId); });
+  $detailDelete.addEventListener('click', function() { deleteMemory(viewingId); });
+
+  // Close overlays on overlay click
+  $formOverlay.addEventListener('click', function(e) { if (e.target === $formOverlay) closeForm(); });
+  $detailOverlay.addEventListener('click', function(e) { if (e.target === $detailOverlay) closeDetail(); });
+
+  // === Init ===
+  render();
+})();
+</script>
 </body>
 </html>
