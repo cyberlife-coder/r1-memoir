@@ -75,16 +75,30 @@
             margin-bottom: 8px;
             font-size: 14px;
         }
+        #qr-json {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            font-family: monospace;
+            word-break: break-all;
+            text-align: center;
+            margin-bottom: 16px;
+            max-width: 400px;
+            color: #8b949e;
+        }
     </style>
 </head>
 <body>
     <h1>🧠 Mes Mémoires</h1>
-    <p>Scanne ce QR code avec ton Rabbit R1 pour installer l'app</p>
+    <p>Scanne ce QR code avec ton Rabbit R1</p>
     
     <div id="qr-container">
         <div id="qr-code"></div>
     </div>
     
+    <div id="qr-json"></div>
     <div class="url-display">https://cyberlife-coder.github.io/r1-memoir/</div>
     
     <a href="https://cyberlife-coder.github.io/r1-memoir/" class="btn">Ouvrir dans le navigateur</a>
@@ -101,21 +115,33 @@
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script>
-        // Generate QR code for the app URL
+        // Generate QR code with the R1 Creation JSON format
         const appUrl = "https://cyberlife-coder.github.io/r1-memoir/";
+        const creationData = {
+            title: "Mes Mémoires",
+            url: appUrl,
+            description: "Journal personnel pour stocker tes souvenirs",
+            iconUrl: appUrl,
+            themeColor: "#2563eb"
+        };
+        
+        // Display the JSON
+        document.getElementById('qr-json').textContent = JSON.stringify(creationData);
+        
+        // Generate QR code with the JSON
         const qrContainer = document.getElementById('qr-code');
         
         new QRCode(qrContainer, {
-            text: appUrl,
-            width: 200,
-            height: 200,
+            text: JSON.stringify(creationData),
+            width: 256,
+            height: 256,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
         
         // Log for debugging
-        console.log("QR Code generated for:", appUrl);
+        console.log("QR Code JSON:", JSON.stringify(creationData));
     </script>
 </body>
 </html>
