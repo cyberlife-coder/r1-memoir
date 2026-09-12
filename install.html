@@ -9,104 +9,65 @@
     body {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       background: #0e0e10;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 20px;
-    }
-    .container {
-      text-align: center;
-      max-width: 320px;
+      padding: 15px;
     }
     h1 {
       font-size: 18px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     p {
       font-size: 12px;
       opacity: 0.7;
       margin-bottom: 20px;
-      line-height: 1.5;
+      text-align: center;
     }
-    #qrcode {
-      display: inline-block;
-      background: #fff;
-      padding: 16px;
-      border-radius: 12px;
-      margin: 10px 0;
-    }
-    #qrcode img {
-      display: block;
+    #qr-image {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
     }
     .steps {
       text-align: left;
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 11px;
-      line-height: 1.8;
+      line-height: 1.6;
+      max-width: 220px;
+    }
+    .steps div {
+      margin-bottom: 6px;
     }
     .steps span {
       display: inline-block;
       background: #2563eb;
       color: #fff;
-      width: 18px;
-      height: 18px;
-      line-height: 18px;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
       text-align: center;
       border-radius: 50%;
-      margin-right: 8px;
-      font-size: 10px;
+      margin-right: 6px;
+      font-size: 9px;
       font-weight: 600;
-    }
-    .update-note {
-      margin-top: 16px;
-      font-size: 10px;
-      opacity: 0.5;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Mes Mémoires</h1>
-    <p>Journal personnel pour stocker tes souvenirs</p>
+  <h1>🧠 Mes Mémoires</h1>
+  <p>Scanne avec la caméra de ton R1</p>
 
-    <div id="qrcode"></div>
+  <img id="qr-image" src="data:image/png;base64,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" alt="QR Code">
 
-    <div class="steps">
-      <div><span>1</span> Ouvre l'app <strong>Creations</strong> sur ton R1</div>
-      <div><span>2</span> Appuie sur <strong>"Add via QR code"</strong></div>
-      <div><span>3</span> Scanne le QR code ci-dessus</div>
-      <div><span>4</span> L'app s'installe automatiquement dans ta stack</div>
-    </div>
-
-    <div class="update-note">
-      Pour mettre à jour : rescanne le QR code après chaque changement
-    </div>
+  <div class="steps">
+    <div><span>1</span> Ouvre l'app <strong>Creations</strong></div>
+    <div><span>2</span> Appuie sur <strong>"Add via QR code"</strong></div>
+    <div><span>3</span> Scanne ce QR code</div>
+    <div><span>4</span> L'app s'installe dans ta stack</div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <script>
-    (function generateQR() {
-      var installPayload = {
-        title: "Mes Mémoires",
-        url: "https://cyberlife-coder.github.io/r1-memoir/",
-        description: "Journal personnel pour stocker tes souvenirs",
-        iconUrl: "",
-        themeColor: "#2563eb"
-      };
-
-      var qrData = JSON.stringify(installPayload);
-
-      new QRCode(document.getElementById("qrcode"), {
-        text: qrData,
-        width: 240,
-        height: 240,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    })();
-  </script>
 </body>
 </html>
