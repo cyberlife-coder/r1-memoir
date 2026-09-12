@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Mémoires — Installer</title>
+    <title>Mes Mémoires — Installer v2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -75,19 +75,6 @@
             margin-bottom: 8px;
             font-size: 14px;
         }
-        #qr-json {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 12px;
-            font-family: monospace;
-            word-break: break-all;
-            text-align: center;
-            margin-bottom: 16px;
-            max-width: 400px;
-            color: #8b949e;
-        }
     </style>
 </head>
 <body>
@@ -98,7 +85,6 @@
         <div id="qr-code"></div>
     </div>
     
-    <div id="qr-json"></div>
     <div class="url-display">https://cyberlife-coder.github.io/r1-memoir/</div>
     
     <a href="https://cyberlife-coder.github.io/r1-memoir/" class="btn">Ouvrir dans le navigateur</a>
@@ -125,9 +111,6 @@
             themeColor: "#2563eb"
         };
         
-        // Display the JSON
-        document.getElementById('qr-json').textContent = JSON.stringify(creationData);
-        
         // Generate QR code with the JSON
         const qrContainer = document.getElementById('qr-code');
         
@@ -140,7 +123,6 @@
             correctLevel: QRCode.CorrectLevel.H
         });
         
-        // Log for debugging
         console.log("QR Code JSON:", JSON.stringify(creationData));
     </script>
 </body>
