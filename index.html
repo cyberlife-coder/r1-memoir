@@ -1,315 +1,340 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Mes Mémoires</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #0d1117;
-    color: #e6edf3;
-    width: 240px;
-    height: 282px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=240, initial-scale=1.0, user-scalable=no">
+  <title>Mes Mémoires</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 240px;
+      height: 282px;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-user-select: none;
+    }
 
-  /* ---- Header ---- */
-  #app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
-    flex-shrink: 0;
-  }
-  #app-header h1 {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
-  .add-btn {
-    background: #238636;
-    border: none;
-    color: #fff;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      flex-shrink: 0;
+    }
+    .header h1 { font-size: 13px; font-weight: 700; }
+    .header .add-icon {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: #2563eb; color: #fff; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700;
+    }
 
-  /* ---- Search ---- */
-  #search-row {
-    padding: 4px 10px;
-    background: #0d1117;
-    flex-shrink: 0;
-  }
-  #search-input {
-    width: 100%;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    background: #161b22;
-    color: #e6edf3;
-    font-size: 11px;
-    outline: none;
-  }
-  #search-input::placeholder { color: #484f58; }
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px;
+    }
+    .content::-webkit-scrollbar { width: 2px; }
+    .content::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
 
-  /* ---- List ---- */
-  #memo-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 6px 10px;
-    scrollbar-width: thin;
-    scrollbar-color: #30363d transparent;
-  }
-  .memo-card {
-    background: #161b22;
-    border-radius: 8px;
-    border: 1px solid #30363d;
-    padding: 8px 10px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    position: relative;
-  }
-  .memo-card:active { background: #1c2128; }
-  .memo-card .title {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-  .memo-card .preview {
-    font-size: 10px;
-    color: #8b949e;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .memo-card .date {
-    font-size: 9px;
-    color: #484f58;
-    margin-top: 2px;
-  }
-  .memo-card .del-btn {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    background: none;
-    border: none;
-    color: #484f58;
-    font-size: 11px;
-    cursor: pointer;
-    padding: 2px 4px;
-  }
-  .memo-card .del-btn:active { color: #ef4444; }
+    .memo-item {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .memo-item.selected {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.15);
+    }
+    .memo-item .memo-title {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .memo-item .memo-preview {
+      font-size: 9px;
+      color: #8b949e;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .memo-item .memo-date {
+      font-size: 8px;
+      color: #484f58;
+      margin-top: 2px;
+    }
+    .memo-item .delete-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: none;
+      border: none;
+      color: #484f58;
+      font-size: 10px;
+      cursor: pointer;
+      padding: 2px;
+    }
+    .memo-item .delete-btn:active { color: #f85149; }
 
-  .empty-msg {
-    text-align: center;
-    color: #484f58;
-    font-size: 11px;
-    padding: 40px 10px;
-    line-height: 1.5;
-  }
+    .empty-msg {
+      text-align: center;
+      color: #484f58;
+      font-size: 10px;
+      padding: 40px 10px;
+      line-height: 1.5;
+    }
 
-  /* ---- Form overlay ---- */
-  #form-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 50;
-    align-items: flex-end;
-  }
-  #form-overlay.active { display: flex; }
-  #form-card {
-    background: #161b22;
-    border-radius: 14px 14px 0 0;
-    padding: 14px;
-    width: 100%;
-  }
-  #form-card h2 {
-    font-size: 13px;
-    margin-bottom: 8px;
-  }
-  #form-card input, #form-card textarea {
-    width: 100%;
-    padding: 6px 8px;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    background: #0d1117;
-    color: #e6edf3;
-    font-size: 12px;
-    outline: none;
-    font-family: inherit;
-    margin-bottom: 6px;
-  }
-  #form-card textarea { height: 60px; resize: none; }
-  .form-actions {
-    display: flex;
-    gap: 6px;
-    justify-content: flex-end;
-  }
-  .form-actions button {
-    padding: 6px 14px;
-    border-radius: 8px;
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-cancel { background: #30363d; color: #e6edf3; }
-  .btn-save { background: #238636; color: #fff; }
+    /* ---- Detail overlay ---- */
+    #detail-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      flex-direction: column;
+    }
+    #detail-overlay.active { display: flex; }
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .detail-header h2 { font-size: 12px; font-weight: 700; }
+    .detail-close {
+      background: #30363d; border: none; color: #e6edf3;
+      width: 22px; height: 22px; border-radius: 5px;
+      font-size: 12px; cursor: pointer;
+    }
+    .detail-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 10px;
+      line-height: 1.5;
+      color: #c9d1d9;
+      white-space: pre-wrap;
+    }
+    .detail-date { font-size: 8px; color: #484f58; margin-bottom: 8px; }
 
-  /* ---- Detail modal ---- */
-  #detail-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 50;
-    align-items: flex-end;
-  }
-  #detail-overlay.active { display: flex; }
-  #detail-card {
-    background: #161b22;
-    border-radius: 14px 14px 0 0;
-    padding: 14px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  #detail-card .detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  #detail-card .detail-title {
-    font-size: 15px;
-    font-weight: 800;
-  }
-  #detail-card .detail-close {
-    background: #30363d;
-    border: none;
-    color: #e6edf3;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  #detail-card .detail-date {
-    font-size: 9px;
-    color: #484f58;
-    margin-bottom: 8px;
-  }
-  #detail-card .detail-body {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #c9d1d9;
-    white-space: pre-wrap;
-  }
-  #detail-card .detail-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  #detail-card .detail-actions button {
-    flex: 1;
-    padding: 6px;
-    border-radius: 8px;
-    border: none;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-detail-back { background: #30363d; color: #e6edf3; }
-  .btn-detail-delete { background: #3d1f28; color: #f85149; }
-  .btn-detail-edit { background: #238636; color: #fff; }
+    /* ---- Form overlay ---- */
+    #form-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 100;
+      flex-direction: column;
+    }
+    #form-overlay.active { display: flex; }
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+    .form-header h2 { font-size: 12px; font-weight: 700; }
+    .form-close {
+      background: #30363d; border: none; color: #e6edf3;
+      width: 22px; height: 22px; border-radius: 5px;
+      font-size: 12px; cursor: pointer;
+    }
+    .form-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-body input {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 5px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #e6edf3;
+      font-size: 11px;
+      font-family: inherit;
+      margin-bottom: 6px;
+      outline: none;
+    }
+    .form-body textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 100px;
+      padding: 6px 8px;
+      border-radius: 5px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #e6edf3;
+      font-size: 11px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      margin-bottom: 6px;
+    }
+    .form-footer {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+    }
+    .form-footer button {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-cancel { background: #30363d; color: #e6edf3; }
+    .btn-save { background: #2563eb; color: #fff; }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 3px; }
-  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
-</style>
+    .footer {
+      padding: 3px 10px;
+      background: #161b22;
+      font-size: 8px;
+      text-align: center;
+      color: #484f58;
+      border-top: 1px solid #30363d;
+      flex-shrink: 0;
+    }
+
+    .voice-status {
+      padding: 2px 8px;
+      font-size: 8px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      background: rgba(255,0,0,0.2);
+    }
+    .voice-status.listening { opacity: 1; }
+
+    .nav-hint {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(37, 99, 235, 0.9);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 9px;
+      z-index: 200;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
 
 <!-- Header -->
-<div id="app-header">
+<div class="header">
   <h1>🧠 Mémoires</h1>
-  <button class="add-btn" id="addBtn">+</button>
+  <div class="add-icon" id="addIcon">+</div>
 </div>
 
-<!-- Search -->
-<div id="search-row">
-  <input type="text" id="search-input" placeholder="Rechercher...">
-</div>
+<!-- Voice status -->
+<div class="voice-status" id="voiceStatus">🎤 Écoute...</div>
 
-<!-- Memo List -->
-<div id="memo-list">
-  <div class="empty-msg" id="empty-msg">
-    <p style="font-size:1.5rem;margin-bottom:6px">📝</p>
+<!-- Content -->
+<div class="content" id="content">
+  <div class="empty-msg" id="emptyMsg" style="display:none;">
+    <p style="font-size:1.4rem;margin-bottom:6px;">📝</p>
     <p>Aucune mémoire</p>
-    <p>Appuie sur <strong>+</strong> pour commencer</p>
+    <p>Clic latéral pour créer</p>
   </div>
 </div>
 
-<!-- Add/Edit Form -->
-<div id="form-overlay">
-  <div id="form-card">
-    <h2 id="form-title">Nouvelle mémoire</h2>
-    <input type="text" id="form-title-input" placeholder="Titre...">
-    <textarea id="form-content-input" placeholder="Ton souvenir..."></textarea>
-    <div class="form-actions">
-      <button class="btn-cancel" id="form-cancel">Annuler</button>
-      <button class="btn-save" id="form-save">💾</button>
-    </div>
-  </div>
+<!-- Footer -->
+<div class="footer">
+  ⏎ Clic: créer · ↕ Molette: naviguer · 🎤 Appui long: dicter
 </div>
 
-<!-- Detail View -->
+<!-- Detail overlay -->
 <div id="detail-overlay">
-  <div id="detail-card">
-    <div class="detail-header">
-      <span class="detail-title" id="detail-title"></span>
-      <button class="detail-close" id="detail-close">✕</button>
-    </div>
+  <div class="detail-header">
+    <h2 id="detail-title">Titre</h2>
+    <button class="detail-close" id="detail-close">✕</button>
+  </div>
+  <div class="detail-body" id="detail-body">
     <div class="detail-date" id="detail-date"></div>
-    <div class="detail-body" id="detail-body"></div>
-    <div class="detail-actions">
-      <button class="btn-detail-back" id="detail-back">Retour</button>
-      <button class="btn-detail-edit" id="detail-edit">✎ Éditer</button>
-      <button class="btn-detail-delete" id="detail-delete">🗑</button>
-    </div>
+    <div id="detail-text"></div>
   </div>
 </div>
+
+<!-- Form overlay -->
+<div id="form-overlay">
+  <div class="form-header">
+    <h2 id="form-title">Nouvelle mémoire</h2>
+    <button class="form-close" id="form-close">✕</button>
+  </div>
+  <div class="form-body">
+    <input type="text" id="form-input-title" placeholder="Titre...">
+    <textarea id="form-input-content" placeholder="Ton souvenir..."></textarea>
+  </div>
+  <div class="form-footer">
+    <button class="btn-cancel" id="form-cancel">Annuler</button>
+    <button class="btn-save" id="form-save">💾 Enregistrer</button>
+  </div>
+</div>
+
+<!-- Navigation hint -->
+<div class="nav-hint" id="navHint">📌 Sélectionnée</div>
 
 <script>
 (function() {
+  'use strict';
+
+  // === R1 Bridges ===
+  var useScroll = typeof window.scrollUp !== 'undefined' || window.addEventListener;
+  var useSideBtn = typeof window.sideClick !== 'undefined' || window.addEventListener;
+  var useVoice = typeof window.CreationVoiceHandler !== 'undefined';
+  var useStorage = typeof window.creationStorage !== 'undefined' && window.creationStorage && window.creationStorage.plain;
+
   // === Storage ===
-  const STORAGE_KEY = 'r1-memo-app-v1';
+  var STORAGE_KEY = 'r1-memo-memories-v1';
+  var memories = [];
 
   function loadMemories() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
+    if (useStorage) {
+      try {
+        var raw = window.creationStorage.plain.getItem(STORAGE_KEY);
+        if (raw) { memories = JSON.parse(atob(raw)); }
+      } catch(e) { console.error('Load error:', e); }
+    } else {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) { memories = JSON.parse(raw); }
+      } catch(e) { memories = []; }
+    }
   }
 
-  function saveMemories(memories) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(memories));
+  function saveMemories() {
+    var data = JSON.stringify(memories);
+    if (useStorage) {
+      try { window.creationStorage.plain.setItem(STORAGE_KEY, btoa(data)); }
+      catch(e) { console.error('Save error:', e); }
+    } else {
+      try { localStorage.setItem(STORAGE_KEY, data); }
+      catch(e) {}
+    }
   }
 
   function generateId() {
@@ -317,76 +342,8 @@
   }
 
   function formatDate(ts) {
-    const d = new Date(ts);
-    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
-  }
-
-  // === State ===
-  let memories = loadMemories();
-  let editingId = null; // null = new, 'xxx' = edit, 'delete' = view delete
-  let viewingId = null;
-
-  // === DOM refs ===
-  const $list = document.getElementById('memo-list');
-  const $empty = document.getElementById('empty-msg');
-  const $formOverlay = document.getElementById('form-overlay');
-  const $formTitle = document.getElementById('form-title');
-  const $formTitleInput = document.getElementById('form-title-input');
-  const $formContentInput = document.getElementById('form-content-input');
-  const $formCancel = document.getElementById('form-cancel');
-  const $formSave = document.getElementById('form-save');
-  const $detailOverlay = document.getElementById('detail-overlay');
-  const $detailTitle = document.getElementById('detail-title');
-  const $detailDate = document.getElementById('detail-date');
-  const $detailBody = document.getElementById('detail-body');
-  const $detailClose = document.getElementById('detail-close');
-  const $detailBack = document.getElementById('detail-back');
-  const $detailEdit = document.getElementById('detail-edit');
-  const $detailDelete = document.getElementById('detail-delete');
-  const $searchInput = document.getElementById('search-input');
-
-  // === Render ===
-  function render() {
-    const query = $searchInput.value.toLowerCase();
-    const filtered = query
-      ? memories.filter(m => m.title.toLowerCase().includes(query) || m.content.toLowerCase().includes(query))
-      : memories;
-
-    $list.innerHTML = '';
-
-    if (memories.length === 0 && !query) {
-      $list.appendChild($empty);
-      $empty.style.display = 'block';
-      return;
-    }
-
-    $empty.style.display = 'none';
-
-    if (filtered.length === 0 && query) {
-      const p = document.createElement('div');
-      p.className = 'empty-msg';
-      p.textContent = 'Aucun résultat pour « ' + query + ' »';
-      $list.appendChild(p);
-      return;
-    }
-
-    filtered.forEach(function(memo) {
-      const card = document.createElement('div');
-      card.className = 'memo-card';
-
-      card.innerHTML = '<div class="title">' + esc(memo.title) + '</div>' +
-        '<div class="preview">' + esc(memo.content.slice(0, 60)) + '</div>' +
-        '<div class="date">' + formatDate(memo.createdAt) + '</div>' +
-        '<button class="del-btn">✕</button>';
-
-      card.querySelector('.title').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
-      card.querySelector('.preview').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
-      card.querySelector('.date').addEventListener('click', function(e) { e.stopPropagation(); openDetail(memo.id); });
-      card.querySelector('.del-btn').addEventListener('click', function(e) { e.stopPropagation(); deleteMemory(memo.id); });
-      card.addEventListener('click', function() { openDetail(memo.id); });
-
-      $list.appendChild(card);
-    });
+    var d = new Date(ts);
+    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
   function esc(s) {
@@ -395,48 +352,105 @@
     return d.innerHTML;
   }
 
-  // === Actions ===
-  function openAddForm() {
-    editingId = null;
-    $formTitle.textContent = 'Nouvelle mémoire';
-    $formTitleInput.value = '';
-    $formContentInput.value = '';
-    $formOverlay.classList.add('active');
-    $formTitleInput.focus();
-  }
+  // === State ===
+  loadMemories();
+  var selectedIndex = -1;
+  var viewingId = null;
+  var editingId = null;
+  var filteredMemories = [];
 
-  function closeForm() {
-    $formOverlay.classList.remove('active');
-    editingId = null;
-  }
+  // === DOM ===
+  var $content = document.getElementById('content');
+  var $emptyMsg = document.getElementById('emptyMsg');
+  var $detailOverlay = document.getElementById('detail-overlay');
+  var $detailTitle = document.getElementById('detail-title');
+  var $detailDate = document.getElementById('detail-date');
+  var $detailText = document.getElementById('detail-text');
+  var $detailClose = document.getElementById('detail-close');
+  var $formOverlay = document.getElementById('form-overlay');
+  var $formTitle = document.getElementById('form-title');
+  var $formInputTitle = document.getElementById('form-input-title');
+  var $formInputContent = document.getElementById('form-input-content');
+  var $formClose = document.getElementById('form-close');
+  var $formCancel = document.getElementById('form-cancel');
+  var $formSave = document.getElementById('form-save');
+  var $voiceStatus = document.getElementById('voiceStatus');
+  var $navHint = document.getElementById('navHint');
+  var $addIcon = document.getElementById('addIcon');
 
-  function saveForm() {
-    var title = $formTitleInput.value.trim();
-    var content = $formContentInput.value.trim();
-    if (!title && !content) return;
+  // === Render ===
+  function render() {
+    $content.innerHTML = '';
 
-    if (editingId) {
-      // Edit existing
-      memories = memories.map(function(m) {
-        if (m.id === editingId) return { ...m, title: title || 'Sans titre', content: content };
-        return m;
-      });
-    } else {
-      memories.unshift({ id: generateId(), title: title || 'Sans titre', content: content, createdAt: Date.now() });
+    if (memories.length === 0) {
+      $content.appendChild($emptyMsg);
+      $emptyMsg.style.display = 'block';
+      selectedIndex = -1;
+      return;
     }
 
-    saveMemories(memories);
-    closeForm();
-    render();
+    $emptyMsg.style.display = 'none';
+    filteredMemories = memories.slice(0, 10); // Max 10 in viewport
+
+    filteredMemories.forEach(function(memo, i) {
+      var item = document.createElement('div');
+      item.className = 'memo-item' + (i === selectedIndex ? ' selected' : '');
+
+      var titleEl = document.createElement('div');
+      titleEl.className = 'memo-title';
+      titleEl.textContent = memo.title;
+
+      var previewEl = document.createElement('div');
+      previewEl.className = 'memo-preview';
+      previewEl.textContent = memo.content.length > 50 ? memo.content.slice(0, 50) + '...' : memo.content;
+
+      var dateEl = document.createElement('div');
+      dateEl.className = 'memo-date';
+      dateEl.textContent = formatDate(memo.createdAt);
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'delete-btn';
+      delBtn.textContent = '✕';
+      delBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        deleteMemory(memo.id);
+      });
+
+      item.appendChild(titleEl);
+      item.appendChild(previewEl);
+      item.appendChild(dateEl);
+      item.appendChild(delBtn);
+
+      item.addEventListener('click', function() {
+        openDetail(memo.id);
+      });
+
+      $content.appendChild(item);
+    });
+
+    // Scroll to selected
+    if (selectedIndex >= 0 && selectedIndex < $content.children.length) {
+      var item = $content.children[selectedIndex];
+      if (item) {
+        var rect = item.getBoundingClientRect();
+        var contentRect = $content.getBoundingClientRect();
+        if (rect.bottom > contentRect.bottom) {
+          $content.scrollTop += (rect.bottom - contentRect.bottom) + 20;
+        } else if (rect.top < contentRect.top) {
+          $content.scrollTop -= (contentRect.top - rect.top) + 20;
+        }
+      }
+    }
   }
 
+  // === Detail ===
   function openDetail(id) {
     var memo = memories.find(function(m) { return m.id === id; });
     if (!memo) return;
     viewingId = id;
     $detailTitle.textContent = memo.title;
-    $detailDate.textContent = new Date(memo.createdAt).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    $detailBody.textContent = memo.content;
+    $detailDate.textContent = formatDate(memo.createdAt);
+    $detailText.textContent = memo.content;
     $detailOverlay.classList.add('active');
   }
 
@@ -446,33 +460,180 @@
   }
 
   function deleteMemory(id) {
+    if (!confirm('Supprimer cette mémoire ?')) return;
     memories = memories.filter(function(m) { return m.id !== id; });
-    saveMemories(memories);
+    saveMemories();
     if (viewingId === id) closeDetail();
+    selectedIndex = Math.min(selectedIndex, memories.length - 1);
+    if (selectedIndex < 0) selectedIndex = 0;
     render();
   }
 
-  function startEditFromDetail(id) {
-    var memo = memories.find(function(m) { return m.id === id; });
-    if (!memo) return;
-    closeDetail();
-    editingId = id;
-    $formTitle.textContent = 'Modifier';
-    $formTitleInput.value = memo.title;
-    $formContentInput.value = memo.content;
+  // === Form ===
+  function openForm(editId) {
+    editingId = editId || null;
+    if (editingId) {
+      var memo = memories.find(function(m) { return m.id === editingId; });
+      if (!memo) return;
+      $formTitle.textContent = 'Modifier';
+      $formInputTitle.value = memo.title;
+      $formInputContent.value = memo.content;
+    } else {
+      $formTitle.textContent = 'Nouvelle mémoire';
+      $formInputTitle.value = '';
+      $formInputContent.value = '';
+    }
     $formOverlay.classList.add('active');
+    $formInputTitle.focus();
   }
 
-  // === Events ===
-  document.getElementById('addBtn').addEventListener('click', openAddForm);
+  function closeForm() {
+    $formOverlay.classList.remove('active');
+    editingId = null;
+  }
+
+  function saveForm() {
+    var title = $formInputTitle.value.trim();
+    var content = $formInputContent.value.trim();
+    if (!title && !content) return;
+
+    if (editingId) {
+      memories = memories.map(function(m) {
+        if (m.id === editingId) return { id: m.id, title: title || 'Sans titre', content: content, createdAt: m.createdAt };
+        return m;
+      });
+    } else {
+      memories.unshift({
+        id: generateId(),
+        title: title || 'Sans titre',
+        content: content,
+        createdAt: Date.now()
+      });
+    }
+
+    saveMemories();
+    closeForm();
+    selectedIndex = Math.max(0, Math.min(selectedIndex, memories.length - 1));
+    if (memories.length > 0 && selectedIndex < 0) selectedIndex = 0;
+    render();
+  }
+
+  // === Navigation hint ===
+  function showHint(text) {
+    $navHint.textContent = text;
+    $navHint.style.display = 'block';
+    setTimeout(function() { $navHint.style.display = 'none'; }, 1500);
+  }
+
+  // === R1 Side button: create ===
+  function handleSideClick() {
+    closeDetail();
+    closeForm();
+    openForm();
+  }
+
+  // === R1 Scroll wheel: navigate list ===
+  function handleScrollUp() {
+    if (filteredMemories.length === 0) return;
+    if (selectedIndex > 0) {
+      selectedIndex--;
+      render();
+      showHint('↕ ' + (selectedIndex + 1) + '/' + filteredMemories.length);
+    }
+  }
+
+  function handleScrollDown() {
+    if (filteredMemories.length === 0) return;
+    if (selectedIndex < filteredMemories.length - 1) {
+      selectedIndex++;
+      render();
+      showHint('↕ ' + (selectedIndex + 1) + '/' + filteredMemories.length);
+    }
+  }
+
+  // === R1 Voice: handle transcript ===
+  function onSpeechReceived(transcript) {
+    if (!transcript) return;
+    // If form is open, fill content
+    if ($formOverlay.classList.contains('active')) {
+      $formInputContent.value = ($formInputContent.value + ' ' + transcript).trim();
+    } else {
+      // Create new memory with transcript as content
+      memories.unshift({
+        id: generateId(),
+        title: transcript.split(' ').slice(0, 5).join(' ') + (transcript.split(' ').length > 5 ? '...' : ''),
+        content: transcript,
+        createdAt: Date.now()
+      });
+      saveMemories();
+      selectedIndex = 0;
+      render();
+      showHint('🎤 Sauvegardé !');
+    }
+  }
+
+  // === R1 Long press: voice recording ===
+  var isRecording = false;
+
+  function startRecording() {
+    if (!useVoice) return;
+    isRecording = true;
+    $voiceStatus.classList.add('listening');
+    try {
+      if (window.CreationVoiceHandler && window.CreationVoiceHandler.postMessage) {
+        window.CreationVoiceHandler.postMessage('start');
+      }
+    } catch(e) {}
+  }
+
+  function stopRecording() {
+    if (!useVoice) return;
+    isRecording = false;
+    $voiceStatus.classList.remove('listening');
+    try {
+      if (window.CreationVoiceHandler && window.CreationVoiceHandler.postMessage) {
+        window.CreationVoiceHandler.postMessage('stop');
+      }
+    } catch(e) {}
+  }
+
+  // === R1 Message handler ===
+  window.onPluginMessage = function(data) {
+    if (!data || !data.type) return;
+
+    switch(data.type) {
+      case 'sttEnded':
+        if (data.transcript) {
+          onSpeechReceived(data.transcript);
+        }
+        break;
+      default:
+        console.log('R1 Msg:', data);
+    }
+  };
+
+  // === Attach R1 event listeners ===
+  if (useScroll) {
+    window.addEventListener('scrollUp', handleScrollUp);
+    window.addEventListener('scrollDown', handleScrollDown);
+  }
+
+  if (useSideBtn) {
+    window.addEventListener('sideClick', handleSideClick);
+  }
+
+  if (useVoice) {
+    window.addEventListener('longPressStart', startRecording);
+    window.addEventListener('longPressEnd', stopRecording);
+  }
+
+  // === Attach HTML event listeners (backup + detail/form) ===
+  $addIcon.addEventListener('click', function() { closeDetail(); closeForm(); openForm(); });
+  $detailClose.addEventListener('click', closeDetail);
+  $formClose.addEventListener('click', closeForm);
   $formCancel.addEventListener('click', closeForm);
   $formSave.addEventListener('click', saveForm);
-  $detailClose.addEventListener('click', closeDetail);
-  $detailBack.addEventListener('click', closeDetail);
-  $detailEdit.addEventListener('click', function() { startEditFromDetail(viewingId); });
-  $detailDelete.addEventListener('click', function() { deleteMemory(viewingId); });
 
-  // Close overlays on overlay click
   $formOverlay.addEventListener('click', function(e) { if (e.target === $formOverlay) closeForm(); });
   $detailOverlay.addEventListener('click', function(e) { if (e.target === $detailOverlay) closeDetail(); });
 
