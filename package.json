@@ -3,7 +3,8 @@
   "name": "r1-memoir",
   "version": "1.0.0",
   "scripts": {
-    "deploy": "gh-pages -d . -m \"Deploy to GitHub Pages\""
+    "deploy": "gh-pages -d .",
+    "deploy:base": "gh-pages -d . -b gh-pages"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
