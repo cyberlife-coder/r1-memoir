@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Mémoires — Installer v2</title>
+    <title>Mes Mémoires — Installer</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -24,8 +24,13 @@
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #qr-code {
+        #qr-image {
+            width: 200px;
+            height: 200px;
             display: block;
         }
         .url-display {
@@ -51,8 +56,6 @@
             cursor: pointer;
             text-decoration: none;
         }
-        .btn:hover { background: #2ea043; }
-        .btn:active { transform: scale(0.98); }
         .instructions {
             margin-top: 30px;
             padding: 16px;
@@ -82,7 +85,7 @@
     <p>Scanne ce QR code avec ton Rabbit R1</p>
     
     <div id="qr-container">
-        <div id="qr-code"></div>
+        <img id="qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=%7B%22title%22%3A%22Mes%20M%C3%A9moires%22%2C%22url%22%3A%22https%3A%2F%2Fcyberlife-coder.github.io%2Fr1-memoir%2F%22%2C%22description%22%3A%22Journal%20personnel%20pour%20stocker%20tes%20souvenirs%22%2C%22iconUrl%22%3A%22https%3A%2F%2Fcyberlife-coder.github.io%2Fr1-memoir%2F%22%2C%22themeColor%22%3A%22%232563eb%22%7D" alt="QR Code pour installer Mes Mémoires sur R1">
     </div>
     
     <div class="url-display">https://cyberlife-coder.github.io/r1-memoir/</div>
@@ -98,32 +101,5 @@
             <li>L'app s'installera automatiquement</li>
         </ol>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script>
-        // Generate QR code with the R1 Creation JSON format
-        const appUrl = "https://cyberlife-coder.github.io/r1-memoir/";
-        const creationData = {
-            title: "Mes Mémoires",
-            url: appUrl,
-            description: "Journal personnel pour stocker tes souvenirs",
-            iconUrl: appUrl,
-            themeColor: "#2563eb"
-        };
-        
-        // Generate QR code with the JSON
-        const qrContainer = document.getElementById('qr-code');
-        
-        new QRCode(qrContainer, {
-            text: JSON.stringify(creationData),
-            width: 256,
-            height: 256,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        
-        console.log("QR Code JSON:", JSON.stringify(creationData));
-    </script>
 </body>
 </html>
